@@ -1,0 +1,10 @@
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\obj\Debug\InvoiceAPITester.csprojAssemblyReference.cache
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\obj\Debug\InvoiceAPITester.csproj.CoreCompileInputs.cache
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\bin\Debug\InvoiceAPITester.exe.config
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\bin\Debug\InvoiceAPITester.exe
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\bin\Debug\InvoiceAPITester.pdb
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\bin\Debug\Newtonsoft.Json.dll
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\bin\Debug\Newtonsoft.Json.xml
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\obj\Debug\InvoiceAPITester.csproj.CopyComplete
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\obj\Debug\InvoiceAPITester.exe
+C:\Users\DrN\Desktop\ImageAPITester\InvoiceAPITester\InvoiceAPITester\obj\Debug\InvoiceAPITester.pdb
