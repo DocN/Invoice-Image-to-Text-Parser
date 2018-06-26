@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.HttpUtility, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.HttpUtility.1.0.0.1\lib\net40\Mono.HttpUtility.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -46,11 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageData\Line.cs" />
+    <Compile Include="ImageData\RecognitionResult.cs" />
     <Compile Include="Model\Boundary.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ImageData\Region.cs" />
-    <Compile Include="ImageData\ImageData.cs" />
+    <Compile Include="ImageData\ImageResData.cs" />
     <Compile Include="ImageData\Word.cs" />
   </ItemGroup>
   <ItemGroup>

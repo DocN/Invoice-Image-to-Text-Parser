@@ -8,7 +8,8 @@ namespace InvoiceAPITester
 {
     public class Line
     {
-        public string boundingBox { get; set; }
+        public List<int> boundingBox { get; set; }
+        public string text { get; set; }
         public List<Word> words { get; set; }
     }
 }

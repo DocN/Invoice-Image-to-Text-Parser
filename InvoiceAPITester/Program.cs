@@ -1,11 +1,15 @@
 ﻿using InvoiceAPITester.Model;
+using Mono.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+
 
 namespace InvoiceAPITester
 {
@@ -13,6 +17,7 @@ namespace InvoiceAPITester
     {
         // Replace <Subscription Key> with your valid subscription key.
         const string subscriptionKey = "f577641951704b30912fbcee867135f2";
+        static string responseURI = "";
 
         // You must use the same region in your REST call as you used to
         // get your subscription keys. For example, if you got your
@@ -22,8 +27,8 @@ namespace InvoiceAPITester
         // Free trial subscription keys are generated in the westcentralus region.
         // If you use a free trial subscription key, you shouldn't need to change
         // this region.
-        const string uriBase =
-            "https://westus.api.cognitive.microsoft.com/vision/v2.0/ocr?detectOrientation=true";
+        const string uriBase = "https://westus.api.cognitive.microsoft.com/vision/v2.0/recognizeText";
+            //"https://westus.api.cognitive.microsoft.com/vision/v2.0/ocr";
 
         static void Main()
         {
@@ -48,14 +53,15 @@ namespace InvoiceAPITester
                 // Make the REST API call.
                 Console.WriteLine("\nWait a moment for the results to appear.\n");
                 MakeOCRRequest(imageFilePath).Wait();
+                MakeRequest(responseURI).Wait();
             }
             else
             {
                 Console.WriteLine("\nInvalid file path");
             }
-            Console.WriteLine("\nPress Enter to exit...");
             Console.ReadLine();
         }
+
 
         /// <summary>
         /// Gets the text visible in the specified image file by using
@@ -73,8 +79,7 @@ namespace InvoiceAPITester
                     "Ocp-Apim-Subscription-Key", subscriptionKey);
 
                 // Request parameters.
-                string requestParameters = "language=unk&detectOrientation=true";
-
+                string requestParameters = "mode=Printed";
                 // Assemble the URI for the REST API Call.
                 string uri = uriBase + "?" + requestParameters;
 
@@ -94,21 +99,50 @@ namespace InvoiceAPITester
                     // Make the REST API call.
                     response = await client.PostAsync(uri, content);
                 }
+                IEnumerable<string> values;
 
                 // Get the JSON response.
-                string contentString = await response.Content.ReadAsStringAsync();
-                var imageData = JsonConvert.DeserializeObject<ImageData>(contentString);
-
-
-                // Display the JSON response.
-                //Console.WriteLine("\nResponse:\n\n{0}\n",JToken.Parse(contentString).ToString());
-
-                string lines = JToken.Parse(contentString).ToString();
-                System.IO.File.WriteAllText(@"D:\TestFolder\WriteText.txt", lines);
+                response.Headers.TryGetValues("Operation-Location", out values);
+                
+                Console.WriteLine(values.FirstOrDefault());
+                responseURI = values.FirstOrDefault();
             }
             catch (Exception e)
             {
                 Console.WriteLine("\n" + e.Message);
+            }
+        }
+
+        static async Task MakeRequest(string responseURI)
+        {
+            var client = new HttpClient();
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+
+            // Request headers
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+
+            var uri = responseURI;
+
+            //check when response is ready 
+            bool status = false;
+            while (status == false)
+            {
+                var response = await client.GetAsync(uri);
+                string contentString = await response.Content.ReadAsStringAsync();
+                var imageData = JsonConvert.DeserializeObject<ImageResData>(contentString);
+                if(imageData.status.Equals("Succeeded"))
+                {
+                    status = true;
+                    string lines = JToken.Parse(contentString).ToString();
+
+                    System.IO.File.WriteAllText(@"D:\TestFolder\WriteText.txt", lines);
+                    Console.WriteLine("Done Task " + uri);
+                }
+                else
+                {
+                    Console.WriteLine("Not ready yet " + uri);
+                    await Task.Delay(2000);
+                }
             }
         }
 
@@ -126,5 +160,6 @@ namespace InvoiceAPITester
                 return binaryReader.ReadBytes((int)fileStream.Length);
             }
         }
+
     }
 }
