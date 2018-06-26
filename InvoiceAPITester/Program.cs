@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using InvoiceAPITester.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -24,6 +26,16 @@ namespace InvoiceAPITester
             "https://westus.api.cognitive.microsoft.com/vision/v2.0/ocr?detectOrientation=true";
 
         static void Main()
+        {
+            Boundary testB = new Boundary("123,123,124,125");
+            Console.WriteLine(testB.XBegin);
+            Console.WriteLine(testB.XSize);
+            Console.WriteLine(testB.YBegin);
+            Console.WriteLine(testB.YSize);
+            extractImageData();
+        }
+
+        private static void extractImageData()
         {
             // Get the path and filename to process from the user.
             Console.WriteLine("Optical Character Recognition:");
@@ -85,11 +97,13 @@ namespace InvoiceAPITester
 
                 // Get the JSON response.
                 string contentString = await response.Content.ReadAsStringAsync();
+                var imageData = JsonConvert.DeserializeObject<ImageData>(contentString);
+
 
                 // Display the JSON response.
+                //Console.WriteLine("\nResponse:\n\n{0}\n",JToken.Parse(contentString).ToString());
+
                 string lines = JToken.Parse(contentString).ToString();
-                Console.WriteLine("\nResponse:\n\n{0}\n",
-                    JToken.Parse(contentString).ToString());
                 System.IO.File.WriteAllText(@"D:\TestFolder\WriteText.txt", lines);
             }
             catch (Exception e)
